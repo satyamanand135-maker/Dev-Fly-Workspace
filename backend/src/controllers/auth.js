@@ -37,7 +37,7 @@ export const githubCallback = async (req, res) => {
     });
 
     // 3. Smooth redirect back to your Vite frontend's connect page
-    const clientOrigin = process.env.CLIENT_ORIGIN || process.env.FRONTEND_URL || 'http://localhost:5173';
+    const clientOrigin = (process.env.CLIENT_ORIGIN || process.env.FRONTEND_URL || 'http://localhost:5173').replace(/\/$/, '');
     return res.redirect(`${clientOrigin}/connect`);
 
   } catch (err) {

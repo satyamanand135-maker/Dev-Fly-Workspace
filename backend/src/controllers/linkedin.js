@@ -1,7 +1,7 @@
 // backend/src/controllers/linkedin.js
 import axios from 'axios';
 
-const clientOrigin = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
+const clientOrigin = (process.env.CLIENT_ORIGIN || 'http://localhost:5173').replace(/\/$/, '');
 
 // 🚨 Notice the 'export' keyword right before 'const'
 export const connectLinkedIn = (req, res) => {

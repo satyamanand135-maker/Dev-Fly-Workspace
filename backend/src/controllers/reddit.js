@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const clientOrigin = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
+const clientOrigin = (process.env.CLIENT_ORIGIN || 'http://localhost:5173').replace(/\/$/, '');
 
 export const connectReddit = (req, res) => {
   const rootUrl = 'https://www.reddit.com/api/v1/authorize';
