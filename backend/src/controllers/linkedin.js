@@ -6,11 +6,14 @@ const clientOrigin = (process.env.CLIENT_ORIGIN || 'http://localhost:5173').repl
 // 🚨 Notice the 'export' keyword right before 'const'
 export const connectLinkedIn = (req, res) => {
   const rootUrl = 'https://www.linkedin.com/oauth/v2/authorization';
-  
+  const proto = req.headers['x-forwarded-proto'] || req.protocol;
+  const requestOrigin = `${proto}://${req.get('host')}`;
+  const redirectUri = process.env.LINKEDIN_REDIRECT_URI || `${requestOrigin}/api/auth/callback/linkedin`;
+
   const options = {
     response_type: 'code',
     client_id: process.env.LINKEDIN_CLIENT_ID,
-    redirect_uri: process.env.LINKEDIN_REDIRECT_URI,
+    redirect_uri: redirectUri,
     state: 'secure_random_state_string', 
     scope: 'openid profile email', 
   };
@@ -30,12 +33,16 @@ export const linkedinCallback = async (req, res) => {
   try {
     const tokenUrl = 'https://www.linkedin.com/oauth/v2/accessToken';
     
+    const proto = req.headers['x-forwarded-proto'] || req.protocol;
+    const requestOrigin = `${proto}://${req.get('host')}`;
+    const redirectUri = process.env.LINKEDIN_REDIRECT_URI || `${requestOrigin}/api/auth/callback/linkedin`;
+
     const response = await axios.post(tokenUrl, new URLSearchParams({
       grant_type: 'authorization_code',
       code: code,
       client_id: process.env.LINKEDIN_CLIENT_ID,
       client_secret: process.env.LINKEDIN_CLIENT_SECRET,
-      redirect_uri: process.env.LINKEDIN_REDIRECT_URI,
+      redirect_uri: redirectUri,
     }), {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     });
