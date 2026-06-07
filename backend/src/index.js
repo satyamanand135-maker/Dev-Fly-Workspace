@@ -16,11 +16,12 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: CLIENT_ORIGIN,
   credentials: true 
 }));
 app.use(express.json());

@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Github, Zap, ArrowRight, Shield, GitBranch, Star } from "lucide-react";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+
 // ─── Animated Canvas Background ─────────────────────────────────────────────
 function AnimatedBackground() {
   const canvasRef = useRef(null);
@@ -211,7 +213,7 @@ export default function Login() {
 
     // Replace this string with your real GitHub Client ID from Developer Settings
     const CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID; 
-    const REDIRECT_URI = "http://localhost:5000/api/auth/callback/github";
+    const REDIRECT_URI = `${API_BASE_URL}/api/auth/callback/github`;
     const SCOPE = "repo,read:user"; 
 
     // Kickoff the structural context handover to GitHub

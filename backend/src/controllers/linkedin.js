@@ -1,6 +1,8 @@
 // backend/src/controllers/linkedin.js
 import axios from 'axios';
 
+const clientOrigin = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
+
 // 🚨 Notice the 'export' keyword right before 'const'
 export const connectLinkedIn = (req, res) => {
   const rootUrl = 'https://www.linkedin.com/oauth/v2/authorization';
@@ -22,7 +24,7 @@ export const linkedinCallback = async (req, res) => {
   const { code } = req.query;
 
   if (!code) {
-    return res.redirect('http://localhost:5173/connect?error=auth_failed');
+    return res.redirect(`${clientOrigin}/connect?error=auth_failed`);
   }
 
   try {
@@ -47,10 +49,10 @@ export const linkedinCallback = async (req, res) => {
       maxAge: 3600000 * 24 * 30 // 30 Days
     });
 
-    return res.redirect('http://localhost:5173/connect');
+    return res.redirect(`${clientOrigin}/connect`);
 
   } catch (error) {
     console.error('LinkedIn OAuth Processing Error:', error.response?.data || error.message);
-    return res.redirect('http://localhost:5173/connect?error=server_fault');
+    return res.redirect(`${clientOrigin}/connect?error=server_fault`);
   }
 };

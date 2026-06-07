@@ -7,6 +7,8 @@ import {
   Edit3, Instagram, Hash, MessageSquare
 } from "lucide-react";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+
 const PLATFORMS = ["X", "LinkedIn", "Reddit", "Instagram"];
 
 const PLATFORM_ICONS = {
@@ -209,7 +211,7 @@ export default function DevPost() {
 
   // Pipeline 1: Fetch Workspace Repositories
   useEffect(() => {
-    axios.get("http://localhost:5000/api/github/repos", { withCredentials: true })
+    axios.get(`${API_BASE_URL}/api/github/repos`, { withCredentials: true })
       .then((response) => {
         setRepositories(response.data);
         if (response.data.length > 0) {
@@ -231,7 +233,7 @@ export default function DevPost() {
     setSelectedCommit(null);   
     setGeneratedDrafts(null);   
 
-    axios.get(`http://localhost:5000/api/github/repos/${selectedRepo.name}/commits`, { withCredentials: true })
+    axios.get(`${API_BASE_URL}/api/github/repos/${selectedRepo.name}/commits`, { withCredentials: true })
       .then((response) => {
         setCommits(response.data);
         setIsLoadingCommits(false);
@@ -252,7 +254,7 @@ export default function DevPost() {
     const activeCommit = commits.find(c => c.id === commitId);
 
     try {
-      const response = await axios.post("http://localhost:5000/api/ai/generate-drafts", {
+      const response = await axios.post(`${API_BASE_URL}/api/ai/generate-drafts`, {
         repo_name: selectedRepo.name,
         commit_sha: activeCommit?.sha,
         commit_message: activeCommit?.message
@@ -285,7 +287,7 @@ export default function DevPost() {
     setPublishStatus({ success: null, msg: "" });
 
     try {
-      const response = await axios.post("http://localhost:5000/api/publish/linkedin", {
+      const response = await axios.post(`${API_BASE_URL}/api/publish/linkedin`, {
         text: generatedDrafts[activePlatform]
       }, { withCredentials: true });
 
@@ -330,25 +332,25 @@ export default function DevPost() {
     name: "LinkedIn", 
     icon: Linkedin, 
     active: isLinkedInConnected, 
-    connectUrl: "http://localhost:5000/api/auth/connect/linkedin" 
+    connectUrl: `${API_BASE_URL}/api/auth/connect/linkedin` 
   },
   { 
     name: "X (Twitter)", 
     icon: Twitter, 
     active: isXConnected, 
-    connectUrl: "http://localhost:5000/api/auth/connect/x" // 👈 Add backend route
+    connectUrl: `${API_BASE_URL}/api/auth/connect/x` // 👈 Add backend route
   },
   { 
     name: "Reddit", 
     icon: MessageSquare, 
     active: isRedditConnected, 
-    connectUrl: "http://localhost:5000/api/auth/connect/reddit" // 👈 Add backend route
+    connectUrl: `${API_BASE_URL}/api/auth/connect/reddit` // 👈 Add backend route
   },
   { 
     name: "Instagram", 
     icon: Instagram, 
     active: isInstagramConnected, 
-    connectUrl: "http://localhost:5000/api/auth/connect/instagram" // 👈 Add backend route
+    connectUrl: `${API_BASE_URL}/api/auth/connect/instagram` // 👈 Add backend route
   },
   ];
 

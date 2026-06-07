@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+const clientOrigin = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
+
 export const connectX = (req, res) => {
   const rootUrl = 'https://twitter.com/i/oauth2/authorize';
   const options = {
@@ -16,7 +18,7 @@ export const connectX = (req, res) => {
 
 export const xCallback = async (req, res) => {
   const { code } = req.query;
-  if (!code) return res.redirect('http://localhost:5173/connect?error=x_denied');
+  if (!code) return res.redirect(`${clientOrigin}/connect?error=x_denied`);
 
   try {
     // Exchange callback token code here via axios post...
@@ -27,8 +29,8 @@ export const xCallback = async (req, res) => {
       secure: process.env.NODE_ENV === 'production',
       maxAge: 3600000 * 24 * 30
     });
-    return res.redirect('http://localhost:5173/connect');
+    return res.redirect(`${clientOrigin}/connect`);
   } catch (err) {
-    return res.redirect('http://localhost:5173/connect?error=x_fault');
+    return res.redirect(`${clientOrigin}/connect?error=x_fault`);
   }
 };

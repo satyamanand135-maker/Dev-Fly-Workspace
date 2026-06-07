@@ -5,6 +5,8 @@ import {
   ArrowRight, Zap, Github, ChevronRight, X
 } from "lucide-react";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+
 const PLATFORMS = [
   {
     id: "linkedin", name: "LinkedIn", icon: Linkedin,
@@ -184,11 +186,11 @@ export default function Connect() {
     setConnecting(id);
 
     if (id === "linkedin") {
-      window.location.href = "http://localhost:5000/api/auth/connect/linkedin";
+      window.location.href = `${API_BASE_URL}/api/auth/connect/linkedin`;
     } else if (id === "x") {
-      window.location.href = "http://localhost:5000/api/auth/connect/x";
+      window.location.href = `${API_BASE_URL}/api/auth/connect/x`;
     } else if (id === "reddit") {
-      window.location.href = "http://localhost:5000/api/auth/connect/reddit";
+      window.location.href = `${API_BASE_URL}/api/auth/connect/reddit`;
     } else {
       // Instagram simulation loop until Meta APIs are verified
       setTimeout(() => {
