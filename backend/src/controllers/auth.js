@@ -37,7 +37,8 @@ export const githubCallback = async (req, res) => {
     });
 
     // 3. Smooth redirect back to your Vite frontend's connect page
-    return res.redirect(`${process.env.FRONTEND_URL}/connect`);
+    const clientOrigin = process.env.CLIENT_ORIGIN || process.env.FRONTEND_URL || 'http://localhost:5173';
+    return res.redirect(`${clientOrigin}/connect`);
 
   } catch (err) {
     console.error('OAuth Exchange Error:', err.message);
